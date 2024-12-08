@@ -4,6 +4,48 @@ Diabetes Melitus (DM) adalah salah satu sindrom yang ditandai dengan kelainan pa
 
 Di dunia teknologi saat ini teknologi telah melekat dalam kehidupan sehari-hari, teknologi telah mempermudah pekerjaan manusia di setiap bidang kehidupan termasuk kesehatan. Teknologi telah membawa banyak perubahan signifikan dalam dunia kesehatan, menciptakan peluang baru untuk meningkatkan kualitas hidup, mempercepat diagnosis, dan memperbaiki pengobatan. Semakin berkembangnya zaman, semakin berkembang pula teknologi untuk mengatasi permasalahan yang semakin mengusik di bidang kesehatan, dan *machine learning* merupakan salah satu teknologi terbaru yang mampu menyelesaikannya. *Machine learning* merupakan cabang dari kecerdasan buatan (*Artificial Intelligence*) dan ilmu komputer yang berfokus pada penggunaan data dan algoritma untuk meniru cara manusia belajar dan secara bertahap dapat meningkatkan akurasinya. Semakin  bagus  algoritma machine  learning yang digunakan maka akan semakin baik pula keputusan yang keluar (Faiza & Andriani., 2022). *Machine learning* telah membantu manusia dalam menyelesaikan berbagai macam masalah dalam bidang kesehatan. Oleh karenanya dalam proyek ini penulis ingin menggunakan *machine learning* untuk membuat program yang mampu mendeteksi probabilitas seseorang terkena diabetes
 
+## **Business Understanding**
+### **Problem Statements**
+Berdasarkan latar belakang yang telah dipaparkan. Berikut adalah daftar permasalahan yang perlu diselesaikan dalam proyek ini:
+<ul>
+  <li>Seberapa besar persentase dari responden yang mengalami diabetes?</li>
+  <li>Faktor apa saja yang sangat berpengaruh untuk meningkatkan kemungkinan diabetes?</li>
+  <li>Model apa yang paling ampuh untuk memprediksi penderita diabetes?</li>
+</ul>
+
+### **Goals**
+<ul>
+  <li>Mengetahui total persentasi dari responden yang mengalami diabetes.</li>
+  <li>Mengetahui faktor-faktor yang mempengaruhi seseorang menderita diabetes.</li>
+  <li>Menemukan model yang paling ampuh untuk mendeteksi penderita diabetes.</li>
+</ul>
+
+### **Solution Statements**
+<ul>
+  <li>Melakukan analisis terhadap data responden untuk mengetahui persentase penderita diabetes dari seluruh responden yang ada.</li>
+  <li>Melakukan analisis serta menerapkan fungsi visualisai untuk mengetahui faktor-faktor yang sangat mempengaruhi seseorang mengidap diabetes.</li>
+  <li>Menerapkan model pada data yang ada serta membandingkan hasil prediksi antara setiap model untuk menemukan model terbaik.</li>
+</ul>
+
+## **Data Understanding**
+Data yang digunakan dalam proyek ini merupakan data yang aslinya diperoleh dari *National Institute of Diabetes and Digestive and Kidney Diseases* yang kemudian dipublikasikan oleh Akshay Dattatray Khare. Data ini diambil dari pasien perempuan berumur minimal 21 tahun yang merupakan keturunan suku Indian Pima. Data ini memiliki lisensi *CC0: Public Domain* dengan *Usability score* 10.00. Dalam dataset ini memiliki beberapa fitur yang tersimpan kedalam beberapa variabel sebagai berikut:
+
+Variabel|Keterangan
+----------|----------
+Pregnancies|Jumlah kehamilan
+Glucose|Kadar glukosa dalam darah
+BloodPressure|Tekanan darah
+SkinThickness|Ketebalan kulit
+Insulin|Kadar insulin dalam tubuh
+BMI|Index massa tubuh
+DiabetesPedigreeFunction|Presentase diabetes
+Age|Umur
+Outcome|Nilai akhir (positif = 1) dan (negatif = 0)
+
+## **Exploratory Data Analysis**
+### **Deskripsi Variabel**
+
+
 
 ## **Referensi**
 Fadhillah, R. P., Rahma, R., Sepharni, A., Mufidah, R., Sari, B. N., & Pangestu, A. (2022). Klasifikasi Penyakit Diabetes Mellitus Berdasarkan Faktor-Faktor Penyebab Diabetes menggunakan Algoritma C4. 5. JIPI (Jurnal Ilmiah Penelitian dan Pembelajaran Informatika), 7(4), 1265-1270.
