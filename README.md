@@ -30,6 +30,8 @@ Berdasarkan latar belakang yang telah dipaparkan. Berikut adalah daftar permasal
 ## **Data Understanding**
 Data yang digunakan dalam proyek ini merupakan data yang aslinya diperoleh dari *National Institute of Diabetes and Digestive and Kidney Diseases* yang kemudian dipublikasikan oleh Akshay Dattatray Khare. Data ini diambil dari pasien perempuan berumur minimal 21 tahun yang merupakan keturunan suku Indian Pima. Data ini memiliki lisensi *CC0: Public Domain* dengan *Usability score* 10.00. Dalam dataset ini memiliki beberapa fitur yang tersimpan kedalam beberapa variabel sebagai berikut:
 
+<div align="center">
+  
 Variabel|Keterangan
 ----------|----------
 Pregnancies|Jumlah kehamilan
@@ -42,11 +44,15 @@ DiabetesPedigreeFunction|Presentase diabetes
 Age|Umur
 Outcome|Nilai akhir (positif = 1) dan (negatif = 0)
 
+</div>
+
 ## **Exploratory Data Analysis**
 ### **Deskripsi Variabel**
 Berdasarkan detail deskripsi dari data ditemukan bahwa:
 
-#|Column|Non-Null Count|Dtype
+<div align="center">
+
+  #|Column|Non-Null Count|Dtype
 ---|---|---|---
 0|Pregnancies|768 non-null|int64
 1|Glucose|768 non-null|int64
@@ -57,6 +63,8 @@ Berdasarkan detail deskripsi dari data ditemukan bahwa:
 6|DiabetesPedigreeFunction|768 non-null|float64
 7|Age|768 non-null|int64
 8|Outcome|768 non-null|int64
+
+</div>
 
 Dari tabel diatas dapat disimpulkan bahwa:
 <ul>
@@ -94,7 +102,81 @@ Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari d
 
 Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
 
-<img src="images/boxplot_of_pregnancies.jpg"/>
+<p align="center" width="100%">
+  <img src="images/boxplot_of_pregnancies.png"/>
+  <img src="images/boxplot_of_glucose.png"/>
+  <img src="images/boxplot_of_blood_pressure.png"/>
+  <img src="images/boxplot_of_skin_thickness.png"/>
+  <img src="images/boxplot_of_insulin.png"/>
+  <img src="images/boxplot_of_body_mass_index.png"/>
+  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
+  <img src="images/boxplot_of_age.png"/>
+</p>
+
+Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners. Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada 129 data outliners dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
+
+### **Unvariate analysis**
+Untuk menjalankan proses ini, terlebih dahulu setiap fitur harus dibagi menjadi fitur numerik dan kategorik yang diantaranya:
+<ul>
+  <li>Fitur numerik: Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, dan Age</li>
+  <li>Fitur kategorik: Outcome</li>
+</ul>
+
+Selanjutnya setiap fitur akan divisualisasikan ke dalam grafik agar lebih mudah di eksplorasi dimulai dengan fitur kategorik.
+
+<div align="center">
+  <img src="images/barplot_diabetes.png"/>
+</div>
+
+Berdasarkan gambar diatas, ditemukan bahwa mayoritas responden bukan merupakan penderita diabetes (outcome = 0). Dimana jika di persentasekan jumlah responden yang bukan penderita dan penderita diabetes adalah 68.7% dan 31.3%.
+
+Kemudian dilanjut dengan visualisasi fitur numerik.
+
+<div align="center">
+  <img src="images/barplot_all_features.png"/>
+</div>
+
+Berdasarkan histogram diatas dapat disimpulkan bahwa:
+<ul>
+  <li>Plot histogram SkinThickness dan Insulin tidak berdistribusi normal</li>
+  <li>Plot histogram dari Glucose, BloodPressure, dan BMI cukup berdistribusi normal</li>
+  <li>Plot histogram dari Pregnancies, DiabetesPedigreeFunction, dan Age berdistribusi cenderung miring ke kanan sehingga mayoritas data memiliki nilai dibawah rata-rata</li>
+</ul>
+
+### **Multivariate analysis**
+Untuk menganalisis hubungan antara fitur target (Outcome) dengan fitur lainnya, fungsi stripplot() akan digunakan sebagai visualisasi antar hubungan tersebut pada proyek ini.
+
+<div align="center">
+  <img src="images/stripplot_outcome_to_pregnancies.png"/>
+  <img src="images/stripplot_outcome_to_glucose.png"/>
+  <img src="images/stripplot_outcome_to_blood_pressure.png"/>
+  <img src="images/stripplot_outcome_to_skin_thickness.png"/>
+  <img src="images/stripplot_outcome_to_insulin.png"/>
+  <img src="images/stripplot_outcome_to_body_mass_index.png"/>
+  <img src="images/stripplot_outcome_to_diabetes_pedigree_function.png"/>
+  <img src="images/stripplot_outcome_to_age.png"/>
+</div>
+
+Berdasarkan visualisasi dari gambar-gambar diatas dapat disimpulkan bahwa:
+<ul>
+  <li>Tidak terdapat perbedaan yang mencolok antara fitur-fitur diatas dengan kemungkinan penderita diabetes</li>
+  <li>Namun, dalam rentang kandungan glukosa di dalam tubuh orang pengidap diabetes berkisar 80 - 200 mg/dL dimana untuk yang bukan pengidap diabetes berkisar 40 - 180 mg/dL</li>
+</ul>
+
+Selanjutnya untuk melihat korelasi antar fitur numerik pada proyek ini, penulis akan menggunakan fungsi heatmap()
+
+<div align="center">
+  <img src="images/correlation_matrix.png"/>
+</div>
+
+Dari heatmap diatas dapat terlihat bahwa:
+<ul>
+  <li>Umur punya korelasi yang cukup tinggi terhadap jumlah kehamilan, layaknya kadar insulin dalam tubuh terhadap ketebalan kulit</li>
+  <li>Namun Umur punya korelasi yang sangat rendah terhadap kadar insulin dalam tubuh, layaknya jumlah kehamilan terhadap ketebalan kulit</li>
+</ul>
+
+## **Data Preparation**
+
 
 ## **Referensi**
 Fadhillah, R. P., Rahma, R., Sepharni, A., Mufidah, R., Sari, B. N., & Pangestu, A. (2022). Klasifikasi Penyakit Diabetes Mellitus Berdasarkan Faktor-Faktor Penyebab Diabetes menggunakan Algoritma C4. 5. JIPI (Jurnal Ilmiah Penelitian dan Pembelajaran Informatika), 7(4), 1265-1270.
