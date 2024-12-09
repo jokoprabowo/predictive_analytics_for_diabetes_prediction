@@ -176,6 +176,117 @@ Dari heatmap diatas dapat terlihat bahwa:
 </ul>
 
 ## **Data Preparation**
+Proses ini dilakukan melalui beberapa tahap yang meliputi:
+<ul>
+  <li>Encoding fitur kategori,</li>
+  <li>Reduksi dimensi,</li>
+  <li>Pembagian data latih dan uji, dan</li>
+  <li>Standarisasi</li>
+</ul>
+
+Karena data yang digunakan dalam proyek ini tidak memiliki fitur kategorik selain fitur target yaitu Outcome, maka tahap encoding fitur kategori akan dilewati. Selain itu menurut hasil visualisasi melalui heatmap sebelumnya, diketahui bahwa tidak ada fitur-fitur numerik yang memiliki korelasi yang tinggi antar satu sama lain sehingga proses reduksi dimensi tidak bisa di aplikasikan. Oleh karenanya proses ini akan langsung di mulai pada tahap pembagian data.
+
+### **Pembagian data latih dan uji**
+Proses ini akan membagi data yang ada menjadi data latih dan data uji dengan rasio pembagian sebesar 80% untuk data latih dan 20% untuk data uji. Data latih digunakan untuk melatih model yang akan dibuat agar model terbiasa dengan data yang tersedia, yang kemudian model tersebut akan diuji menggunakan data uji untuk mengetahui seberapa efektif model tersebut. Dari total data yang dimiliki di proyek ini (639 data), yang mana 80% dari total data (511 data) menjadi data latih, dan 20% dari total data (128 data) menjadi data uji.
+
+### **Standarisasi**
+Untuk mempersiapkan fitur numerik agar dapat diproses dengan baik, setiap fitur numerik harus melewati proses standarisasi terlebih dahulu. Hal ini diperlukan untuk menghindari kebocoran informasi serta memudahkan model untuk memproses informasi yang masuk melalui data yang digunakan. Saat ini fitur standarisasi hanya akan dilakukan pada data latih karena standarisasi pada data uji hanya akan dilakukan setelah melalui proses evaluasi.
+
+<div align="center">
+
+| |Pregnancies|Glucose|BloodPressure|SkinThickness|Insulin|BMI|DiabetesPedigreeFunction|Age|
+|---|---|---|---|---|---|---|---|---|
+count|511.000|511.000|511.000|511.000|511.000|511.000|511.000|511.000
+mean|-0.000|-0.000|-0.000|-0.000|0.000|0.000|0.000|-0.000
+std|1.001|1.001|1.001|1.001|1.001|1.001|1.001|1.001
+min|-1.186|-2.607|-3.027|-1.344|-0.837|-2.135|-1.404|-1.071
+25%|-0.879|-0.715|-0.744|1.344|-0.837|-0.736|-0.766|-0.803
+50%|-0.266|-0.165|-0.042|0.150|-0.343|-0.013|-0.272|-0.357
+75%|0.653|0.626|0.660|0.734|0.709|0.632|0.626|0.626
+max|2.799|2.689|2.943|2.163|3.096|2.754|3.027|2.947
+
+</div>
+
+Seperti tabel yang terlihat diatas, setelah melewati proses standarisasi nilai rata-rata(mean) dan standar deviasi(std) dari setiap fitur akan berubah menjadi 0 dan 1. Dengan ini proses bisa dilanjutkan.
+
+## **Model Development**
+Dalam proyek ini model yang digunakan untuk mengolah data dan membuat prediksi terhadap data diantaranya:
+<ul>
+  <li>K-Nearest Neighbour</li>
+  <li>Random Forest</li>
+  <li>Adaptive Boosting</li>
+  <li>Support Vector Machine</li>
+  <li>Decision Tree Regression</li>
+</ul>
+
+### **K-Nearest Neighbour**
+Algoritme KNN bekerja dengan menemukan K tetangga terdekat ke titik data tertentu berdasarkan metrik jarak, seperti jarak Euclidean. Kelas atau nilai titik data kemudian ditentukan oleh suara mayoritas atau rata-rata K tetangga. Pendekatan ini memungkinkan algoritme untuk beradaptasi dengan pola yang berbeda dan membuat prediksi berdasarkan struktur lokal data.
+
+Model KNN yang digunakan dalam proyek ini menggunakan fungsi KNeighborsRegressor dari modul sklearn.neighbors, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari n_neighbors yang merupakan jumlah tetangga, leaf_size yang berarti ukuran daun, dan p yang berarti kekuatan parameter.
+
+### **Random Forest**
+Random Forest bekerja dengan membangun beberapa decision tree dan menggabungkannya demi mendapatkan prediksi yang lebih stabil dan akurat. ‘Hutan’ yang dibangun oleh Random Forest adalah kumpulan decision tree di mana biasanya dilatih dengan metode bagging. Ide umum dari metode bagging adalah kombinasi model pembelajaran untuk meningkatkan hasil keseluruhan.
+
+Model Random Forest yang digunakan dalam proyek ini menggunakan fungsi RandomForestRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari n_estimators yang artinya jumlah pohon di dalam hutan, max_depth yang berarti kedalaman maksimum dari pohon, dan leaf_size yang berarti ukuran daun.
+
+### **Adaptive Boosting**
+AdaBoost awalnya memberikan bobot yang sama untuk setiap set data. Kemudian, secara otomatis menyesuaikan bobot titik data setelah setiap pohon keputusan. AdaBoost memberikan bobot lebih pada item dengan klasifikasi yang salah agar diperbaiki di putaran berikutnya. AdaBoost mengulangi proses tersebut hingga kesalahan yang tersisa, atau selisih antara nilai aktual dan prediksi, jatuh di bawah ambang batas yang dapat diterima.
+
+Model Adaptive Boosting yang digunakan dalam proyek ini menggunakan fungsi AdaBoostRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari n_estimator yaitu jumlah penaksir dimana peningkatan dihentikan, learning_rate yaitu kecepatan pembelajaran, dan random_state yaitu benih acak yang digunakan dalam proses.
+
+### **Support Vector Machine**
+SVM bekerja dengan memetakan data ke ruang fitur berdimensi tinggi sehingga titik data dapat dikategorikan, bahkan ketika data tidak dapat dipisahkan secara linier. Ditemukan pemisah antar kategori, kemudian data ditransformasikan sedemikian rupa sehingga pemisah tersebut dapat digambarkan sebagai hyperplane. Setelah itu, karakteristik data baru dapat digunakan untuk memprediksi kelompok mana yang seharusnya menjadi bagian dari data baru.
+
+Model SVM yang digunakan dalam proyek ini menggunakan fungsi SVR dari modul sklearn.svm, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari gamma yang merupakan kernel koefisien, dan verbose yang mengatur pengaturan runtime dalam proses.
+
+### **Decission Tree Regression**
+Untuk memprediksi kelas dari dataset yang diberikan, algoritma Decision tree dimulai dari simpul akar pohon. Algoritma ini membandingkan nilai atribut root dengan atribut record. Berdasarkan perbandingan tersebut, algoritma menelusuri cabang dan menuju ke simpul berikutnya. Untuk simpul berikutnya, algoritma kembali membandingkan nilai atribut dengan sub-simpul lainnya dan bergerak menuju simpul yang lebih dalam. Tujuannya untuk melanjutkan proses sampai mencapai simpul daun (node leaf). 
+
+Model Decission Tree yang digunakan dalam proyek ini menggunakan fungsi DecisionTreeRegressor dari modul sklearn.tree, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari min_samples_leaf yang merupakan jumlah minimum sampel yang diperlukan untuk berada pada simpul daun, min_samples_split yang merupakan jumlah minimum sampel yang diperlukan untuk memisahkan node internal, max_depth yang merupakan kedalaman maksimum dari pohon, max_features yang merupakan jumlah fitur yang perlu dipertimbangkan saat mencari pemisahan terbaik, dan random_state yang melakukan kontrol terhadap penafsir acak.
+
+## **Evaluasi Model**
+Metrik yang digunakan dalam proses evaluasi ini adalah *Mean Squared Error* (MSE). Metrik ini akan dikalikan dengan selisih kuadrat rata-rata nilai sebenarnya dengan hasil prediksi dari model. Namun sebelum melakukan evaluasi, perlu dilakukan scaling pada fitur numerik dalam data uji seperti halnya yang telah dilakukan pada data latih sebelumnya. Hal ini dilakukan agar skala nilai antar keduanya serupa.
+
+Kemudian dilanjutkan dengan melakukan evaluasi terhadap setiap model yang telah dibuat, yang setelahnya muat setiap *mean squared error* (MSE) ke dalam tabel dan visualisasikan ke dalam chart
+
+<div align="center">
+
+| |train|test|
+---|---|---
+KNN|0.000159|0.000141
+RandomForest|0.000034|0.000127
+Boosting|0.000132|0.000141
+SVM|0.000102|0.000147
+DecisionTree|0.0002|0.000164
+
+<img src ="images/model_mse_visualisation.png"/>
+
+</div>
+
+Berdasarkan tabel dan visualisasi diatas, diketahui bahwa model Random Forest merupakan model yang memperoleh nilai *mean squared error* terkecil dibandingkan model-model lainnya baik dalam data latih maupun data uji.
+
+Untuk mengetahui seberapa akurat informasi tersebut, dilakukanlah proses prediksi untuk mengetahui perbandingan nilai prediksi yang dihasilkan oleh setiap model dengan nilai aktual dari data, Yang kemudian disajikan ke dalam sebuah tabel.
+
+<div align="center">
+
+| |y_true|prediksi_KNN|prediksi_RandomForest|prediksi_Boosting|prediksi_SVM|prediksi_DecisionTree
+---|---|---|---|---|---|---
+108|0|0.1|0.0|0.1|-0.0|0.2
+431|0|0.1|0.0|0.1|-0.0|.5
+690|0|0.3|0.2|0.2|0.2|0.5
+
+</div>
+
+Berdasarkan dari data diatas yang memperlihatkan berbagai macam nilai hasil prediksi dari setiap model, setiap model menghasilkan nilai prediksi yang bervariatif namun selisihnya tidak terlalu jauh. Nilai prediksi yang selisihnya lumayan jauh dari nilai aktual dihasilkan oleh model Decission Tree Regressor. Sedangkan hasil prediksi yang nilainya mendekati nilai aktual diperoleh oleh model Random Forest.
+
+
+## **Kesimpulan**
+Berdasarkan hasil yang telah diperolah dari setiap proses yang dilakukan dalam proyek ini dapat disimpulkan bahwa:
+<ul>
+  <li>Dari total responden yang datanya digunakan dalam proyek ini, sebesar 68.7% responden bukan merupakan penderita diabetes dan 31.3% sisanya merupakan penderita diabetes,</li>
+  <li>Faktor terkuat yang mempengaruhi seseorang akan mengidap diabetes adalah kadar glukosa, kadar insulin dan umur, serta</li>
+  <li>Dari 5 model yang digunakan dalam proyek ini yaitu K-Nearest Neighbour, Random Forest, Adaptive Boosting, Support Vector Machine, dan Decision Tree Regression. Model Random Forest merupakan model yang mengasilkan <i>mean squared error</i> paling sedikit dan hasil prediksi yang paling mendekati nilai aktual.</li>
+</ul>
 
 
 ## **Referensi**
