@@ -97,24 +97,6 @@ Dimana:
   <li>max merupakan nilai maximum.</li>
 </ul>
 
-### **Menangani missing value dan outliners**
-Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari data yang mengandung nilai kosong, data terduplikat, serta data dengan nilai yang menyimpang (outliners). Hal ini dilakukan agar data-data tidak lengkap tersebut tidak menggangu dalam pengimplementasian model nanti.
-
-Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
-
-<p align="center" width="100%">
-  <img src="images/boxplot_of_pregnancies.png"/>
-  <img src="images/boxplot_of_glucose.png"/>
-  <img src="images/boxplot_of_blood_pressure.png"/>
-  <img src="images/boxplot_of_skin_thickness.png"/>
-  <img src="images/boxplot_of_insulin.png"/>
-  <img src="images/boxplot_of_body_mass_index.png"/>
-  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
-  <img src="images/boxplot_of_age.png"/>
-</p>
-
-Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners. Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada 129 data outliners dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
-
 ### **Unvariate analysis**
 Untuk menjalankan proses ini, terlebih dahulu setiap fitur harus dibagi menjadi fitur numerik dan kategorik yang diantaranya:
 <ul>
@@ -178,13 +160,28 @@ Dari heatmap diatas dapat terlihat bahwa:
 ## **Data Preparation**
 Proses ini dilakukan melalui beberapa tahap yang meliputi:
 <ul>
-  <li>Encoding fitur kategori,</li>
-  <li>Reduksi dimensi,</li>
+  <li>Menangani missing value dan outliners</li>
   <li>Pembagian data latih dan uji, dan</li>
   <li>Standarisasi</li>
 </ul>
 
-Karena data yang digunakan dalam proyek ini tidak memiliki fitur kategorik selain fitur target yaitu Outcome, maka tahap encoding fitur kategori akan dilewati. Selain itu menurut hasil visualisasi melalui heatmap sebelumnya, diketahui bahwa tidak ada fitur-fitur numerik yang memiliki korelasi yang tinggi antar satu sama lain sehingga proses reduksi dimensi tidak bisa di aplikasikan. Oleh karenanya proses ini akan langsung di mulai pada tahap pembagian data.
+### **Menangani missing value dan outliners**
+Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari data yang mengandung nilai kosong, data terduplikat, serta data dengan nilai yang menyimpang (outliners). Hal ini dilakukan agar data-data tidak lengkap tersebut tidak menggangu dalam pengimplementasian model nanti.
+
+Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
+
+<p align="center" width="100%">
+  <img src="images/boxplot_of_pregnancies.png"/>
+  <img src="images/boxplot_of_glucose.png"/>
+  <img src="images/boxplot_of_blood_pressure.png"/>
+  <img src="images/boxplot_of_skin_thickness.png"/>
+  <img src="images/boxplot_of_insulin.png"/>
+  <img src="images/boxplot_of_body_mass_index.png"/>
+  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
+  <img src="images/boxplot_of_age.png"/>
+</p>
+
+Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners. Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada 129 data outliners dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
 
 ### **Pembagian data latih dan uji**
 Proses ini akan membagi data yang ada menjadi data latih dan data uji dengan rasio pembagian sebesar 80% untuk data latih dan 20% untuk data uji. Data latih digunakan untuk melatih model yang akan dibuat agar model terbiasa dengan data yang tersedia, yang kemudian model tersebut akan diuji menggunakan data uji untuk mengetahui seberapa efektif model tersebut. Dari total data yang dimiliki di proyek ini (639 data), yang mana 80% dari total data (511 data) menjadi data latih, dan 20% dari total data (128 data) menjadi data uji.
@@ -245,47 +242,41 @@ Untuk memprediksi kelas dari dataset yang diberikan, algoritma Decision tree dim
 Model Decission Tree yang digunakan dalam proyek ini menggunakan fungsi DecisionTreeRegressor dari modul sklearn.tree, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari min_samples_leaf yang merupakan jumlah minimum sampel yang diperlukan untuk berada pada simpul daun, min_samples_split yang merupakan jumlah minimum sampel yang diperlukan untuk memisahkan node internal, max_depth yang merupakan kedalaman maksimum dari pohon, max_features yang merupakan jumlah fitur yang perlu dipertimbangkan saat mencari pemisahan terbaik, dan random_state yang melakukan kontrol terhadap penafsir acak.
 
 ## **Evaluasi Model**
-Metrik yang digunakan dalam proses evaluasi ini adalah *Mean Squared Error* (MSE). Metrik ini akan dikalikan dengan selisih kuadrat rata-rata nilai sebenarnya dengan hasil prediksi dari model. Namun sebelum melakukan evaluasi, perlu dilakukan scaling pada fitur numerik dalam data uji seperti halnya yang telah dilakukan pada data latih sebelumnya. Hal ini dilakukan agar skala nilai antar keduanya serupa.
+Metrik yang digunakan dalam proses evaluasi ini yaitu:
+*   Akurasi (Accuracy) merupakan proporsi data yang berhasil diprediksi dengan benar dari seluruh data yang diprediksi.
+<div align='center'>
+  
+</div>
+*   Presisi (Precision) merupakan proporsi data positif yang berhasil diprediksi dengan benar dari seluruh data yang diprediksi positif.
+*   Sensitivitas (Recall) merupakan proporsi data positif yang berhasil diprediksi dengan benar dari seluruh data yang aslinya positif.
+*   skor f1 (F1 Score) merupakan rata-rata harmonik dari precision dan recall untuk mendapatkan sebuah metrik yang seimbang.
 
-Kemudian dilanjutkan dengan melakukan evaluasi terhadap setiap model yang telah dibuat, yang setelahnya muat setiap *mean squared error* (MSE) ke dalam tabel dan visualisasikan ke dalam chart
+Namun sebelum melakukan evaluasi, perlu dilakukan scaling pada fitur numerik dalam data uji seperti halnya yang telah dilakukan pada data latih sebelumnya. Hal ini dilakukan agar skala nilai antar keduanya serupa.
+
+Kemudian dilanjutkan dengan melakukan evaluasi terhadap setiap model yang telah dibuat, yang setelahnya muat setiap metrik ke dalam tabel dan visualisasikan ke dalam chart.
 
 <div align="center">
 
-| |train|test|
----|---|---
-KNN|0.000159|0.000141
-RandomForest|0.000034|0.000127
-Boosting|0.000132|0.000141
-SVM|0.000102|0.000147
-DecisionTree|0.0002|0.000164
+|	|Accuracy|Precision|Recall|F1-score|Support|
+---|---|---|---|---|---
+KNN|0.796875|0.75|0.416667|0.535714|128
+RandomForest|0.804688|0.689655|0.555556|0.615385|128
+Boosting|0.84375|0.863636|0.527778|0.655172|128
+SVM	0.804688|0.761905|0.444444|0.561404|128
+DecisionTree|0.71875|0.0|0.0	0.0|128
 
 <img src ="images/model_mse_visualisation.png"/>
 
 </div>
 
-Berdasarkan tabel dan visualisasi diatas, diketahui bahwa model Random Forest merupakan model yang memperoleh nilai *mean squared error* terkecil dibandingkan model-model lainnya baik dalam data latih maupun data uji.
-
-Untuk mengetahui seberapa akurat informasi tersebut, dilakukanlah proses prediksi untuk mengetahui perbandingan nilai prediksi yang dihasilkan oleh setiap model dengan nilai aktual dari data, Yang kemudian disajikan ke dalam sebuah tabel.
-
-<div align="center">
-
-| |y_true|prediksi_KNN|prediksi_RandomForest|prediksi_Boosting|prediksi_SVM|prediksi_DecisionTree
----|---|---|---|---|---|---
-108|0|0.1|0.0|0.1|-0.0|0.2
-431|0|0.1|0.0|0.1|-0.0|.5
-690|0|0.3|0.2|0.2|0.2|0.5
-
-</div>
-
-Berdasarkan dari data diatas yang memperlihatkan berbagai macam nilai hasil prediksi dari setiap model, setiap model menghasilkan nilai prediksi yang bervariatif namun selisihnya tidak terlalu jauh. Nilai prediksi yang selisihnya lumayan jauh dari nilai aktual dihasilkan oleh model Decission Tree Regressor. Sedangkan hasil prediksi yang nilainya mendekati nilai aktual diperoleh oleh model Random Forest.
-
+Berdasarkan tabel dan gambar diatas, setiap model menghasilkan skor metrik yang bervariasi. Namun jika diperhatikan lebih detail, hasil skor metrik dari setiap model tidak terpaut terlalu jauh. Dan dari gambar di atas dapat diambil kesimpulan bahwa model yang menghasilkan skor akurasi terendah adalah model Decision Tree dengan akurasi 71.88% dan skor akurasi tertinggi adalah model Adaptive Boosting dengan akurasi 84.38%
 
 ## **Kesimpulan**
 Berdasarkan hasil yang telah diperolah dari setiap proses yang dilakukan dalam proyek ini dapat disimpulkan bahwa:
 <ul>
   <li>Dari total responden yang datanya digunakan dalam proyek ini, sebesar 68.7% responden bukan merupakan penderita diabetes dan 31.3% sisanya merupakan penderita diabetes,</li>
   <li>Faktor terkuat yang mempengaruhi seseorang akan mengidap diabetes adalah kadar glukosa, kadar insulin dan umur, serta</li>
-  <li>Dari 5 model yang digunakan dalam proyek ini yaitu K-Nearest Neighbour, Random Forest, Adaptive Boosting, Support Vector Machine, dan Decision Tree Regression. Model Random Forest merupakan model yang mengasilkan <i>mean squared error</i> paling sedikit dan hasil prediksi yang paling mendekati nilai aktual.</li>
+  <li>Dari 5 model yang digunakan dalam proyek ini yaitu K-Nearest Neighbour, Random Forest, Adaptive Boosting, Support Vector Machine, dan Decision Tree Regression. Model Adaptive Boosting merupakan model yang mengasilkan skor akurasi terbesar yaitu sebesar 84.38%.</li>
 </ul>
 
 
