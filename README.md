@@ -219,37 +219,55 @@ Dalam proyek ini model yang digunakan untuk mengolah data dan membuat prediksi t
 ### **K-Nearest Neighbour**
 Algoritme KNN bekerja dengan menemukan K tetangga terdekat ke titik data tertentu berdasarkan metrik jarak, seperti jarak Euclidean. Kelas atau nilai titik data kemudian ditentukan oleh suara mayoritas atau rata-rata K tetangga. Pendekatan ini memungkinkan algoritme untuk beradaptasi dengan pola yang berbeda dan membuat prediksi berdasarkan struktur lokal data.
 
-Model KNN yang digunakan dalam proyek ini menggunakan fungsi KNeighborsRegressor dari modul sklearn.neighbors, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari n_neighbors yang merupakan jumlah tetangga, leaf_size yang berarti ukuran daun, dan p yang berarti kekuatan parameter.
+Model KNN yang digunakan dalam proyek ini menggunakan fungsi KNeighborsRegressor dari modul sklearn.neighbors, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `n_neighbors` yang merupakan jumlah tetangga, `p` yang berarti kekuatan parameter untuk metrik minkowski, `leaf_size` yang berarti ukuran daun, dan p yang berarti kekuatan parameter.
 
 ### **Random Forest**
 Random Forest bekerja dengan membangun beberapa decision tree dan menggabungkannya demi mendapatkan prediksi yang lebih stabil dan akurat. ‘Hutan’ yang dibangun oleh Random Forest adalah kumpulan decision tree di mana biasanya dilatih dengan metode bagging. Ide umum dari metode bagging adalah kombinasi model pembelajaran untuk meningkatkan hasil keseluruhan.
 
-Model Random Forest yang digunakan dalam proyek ini menggunakan fungsi RandomForestRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari n_estimators yang artinya jumlah pohon di dalam hutan, max_depth yang berarti kedalaman maksimum dari pohon, dan leaf_size yang berarti ukuran daun.
+Model Random Forest yang digunakan dalam proyek ini menggunakan fungsi RandomForestRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `n_estimators` yang artinya jumlah pohon di dalam hutan, `max_depth` yang berarti kedalaman maksimum dari pohon, dan `leaf_size` yang berarti ukuran daun.
 
 ### **Adaptive Boosting**
 AdaBoost awalnya memberikan bobot yang sama untuk setiap set data. Kemudian, secara otomatis menyesuaikan bobot titik data setelah setiap pohon keputusan. AdaBoost memberikan bobot lebih pada item dengan klasifikasi yang salah agar diperbaiki di putaran berikutnya. AdaBoost mengulangi proses tersebut hingga kesalahan yang tersisa, atau selisih antara nilai aktual dan prediksi, jatuh di bawah ambang batas yang dapat diterima.
 
-Model Adaptive Boosting yang digunakan dalam proyek ini menggunakan fungsi AdaBoostRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari n_estimator yaitu jumlah penaksir dimana peningkatan dihentikan, learning_rate yaitu kecepatan pembelajaran, dan random_state yaitu benih acak yang digunakan dalam proses.
+Model Adaptive Boosting yang digunakan dalam proyek ini menggunakan fungsi AdaBoostRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `n_estimator` yaitu jumlah penaksir dimana peningkatan dihentikan, `learning_rate` yaitu kecepatan pembelajaran, dan `random_state` yaitu benih acak yang digunakan dalam proses.
 
 ### **Support Vector Machine**
 SVM bekerja dengan memetakan data ke ruang fitur berdimensi tinggi sehingga titik data dapat dikategorikan, bahkan ketika data tidak dapat dipisahkan secara linier. Ditemukan pemisah antar kategori, kemudian data ditransformasikan sedemikian rupa sehingga pemisah tersebut dapat digambarkan sebagai hyperplane. Setelah itu, karakteristik data baru dapat digunakan untuk memprediksi kelompok mana yang seharusnya menjadi bagian dari data baru.
 
-Model SVM yang digunakan dalam proyek ini menggunakan fungsi SVR dari modul sklearn.svm, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari gamma yang merupakan kernel koefisien, dan verbose yang mengatur pengaturan runtime dalam proses.
+Model SVM yang digunakan dalam proyek ini menggunakan fungsi SVR dari modul sklearn.svm, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `gamma` yang merupakan kernel koefisien, `C` yang merupakan parameter regularisasi, dan `kernel` yang menentukan tipe kernel yang akan digunakan dalam algoritma.
 
 ### **Decission Tree Regression**
 Untuk memprediksi kelas dari dataset yang diberikan, algoritma Decision tree dimulai dari simpul akar pohon. Algoritma ini membandingkan nilai atribut root dengan atribut record. Berdasarkan perbandingan tersebut, algoritma menelusuri cabang dan menuju ke simpul berikutnya. Untuk simpul berikutnya, algoritma kembali membandingkan nilai atribut dengan sub-simpul lainnya dan bergerak menuju simpul yang lebih dalam. Tujuannya untuk melanjutkan proses sampai mencapai simpul daun (node leaf). 
 
-Model Decission Tree yang digunakan dalam proyek ini menggunakan fungsi DecisionTreeRegressor dari modul sklearn.tree, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari min_samples_leaf yang merupakan jumlah minimum sampel yang diperlukan untuk berada pada simpul daun, min_samples_split yang merupakan jumlah minimum sampel yang diperlukan untuk memisahkan node internal, max_depth yang merupakan kedalaman maksimum dari pohon, max_features yang merupakan jumlah fitur yang perlu dipertimbangkan saat mencari pemisahan terbaik, dan random_state yang melakukan kontrol terhadap penafsir acak.
+Model Decission Tree yang digunakan dalam proyek ini menggunakan fungsi DecisionTreeRegressor dari modul sklearn.tree, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `min_samples_leaf` yang merupakan jumlah minimum sampel yang diperlukan untuk berada pada simpul daun, `min_samples_split` yang merupakan jumlah minimum sampel yang diperlukan untuk memisahkan node internal, `max_depth` yang merupakan kedalaman maksimum dari pohon, `max_features` yang merupakan jumlah fitur yang perlu dipertimbangkan saat mencari pemisahan terbaik, dan `random_state` yang melakukan kontrol terhadap penafsir acak.
 
 ## **Evaluasi Model**
 Metrik yang digunakan dalam proses evaluasi ini yaitu:
 *   Akurasi (Accuracy) merupakan proporsi data yang berhasil diprediksi dengan benar dari seluruh data yang diprediksi.
 <div align='center'>
   
+  ![1_3tNLgFuAW9O68tyAXE79Rg](https://github.com/user-attachments/assets/ad7099eb-df5b-45fb-8f4c-dd9ef32ac397)
+  
 </div>
 *   Presisi (Precision) merupakan proporsi data positif yang berhasil diprediksi dengan benar dari seluruh data yang diprediksi positif.
+<div align='center'>
+
+![1_6KUFWNO_-a_hoqb-aIN3hQ](https://github.com/user-attachments/assets/2d9b938c-8bd1-4e03-973d-7bd9ab05d994)
+
+  
+</div>
 *   Sensitivitas (Recall) merupakan proporsi data positif yang berhasil diprediksi dengan benar dari seluruh data yang aslinya positif.
+<div align='center'>
+
+![1_yjLTSv_PyaVwYibf4E2_OA](https://github.com/user-attachments/assets/e0228e7a-fd29-4cd7-9c9f-929c64430399)
+  
+</div>
 *   skor f1 (F1 Score) merupakan rata-rata harmonik dari precision dan recall untuk mendapatkan sebuah metrik yang seimbang.
+<div align='center'>
+
+![1_E_NSfHYMszqQ4OBoRxKJdg](https://github.com/user-attachments/assets/33ff173e-42fa-476e-8c0f-b3745ef2d55c)
+  
+</div>
 
 Namun sebelum melakukan evaluasi, perlu dilakukan scaling pada fitur numerik dalam data uji seperti halnya yang telah dilakukan pada data latih sebelumnya. Hal ini dilakukan agar skala nilai antar keduanya serupa.
 
@@ -262,10 +280,10 @@ Kemudian dilanjutkan dengan melakukan evaluasi terhadap setiap model yang telah 
 KNN|0.796875|0.75|0.416667|0.535714|128
 RandomForest|0.804688|0.689655|0.555556|0.615385|128
 Boosting|0.84375|0.863636|0.527778|0.655172|128
-SVM	0.804688|0.761905|0.444444|0.561404|128
-DecisionTree|0.71875|0.0|0.0	0.0|128
+SVM|0.804688|0.761905|0.444444|0.561404|128
+DecisionTree|0.71875|0.0|0.0|0.0|128
 
-<img src ="images/model_mse_visualisation.png"/>
+<img src ="images/models_accuracy.png"/>
 
 </div>
 
