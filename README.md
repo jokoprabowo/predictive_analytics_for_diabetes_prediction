@@ -28,12 +28,27 @@ Berdasarkan latar belakang yang telah dipaparkan. Berikut adalah daftar permasal
 </ul>
 
 ## **Data Understanding**
-Data yang digunakan dalam proyek ini merupakan data yang aslinya diperoleh dari *National Institute of Diabetes and Digestive and Kidney Diseases* yang kemudian dipublikasikan oleh Akshay Dattatray Khare. Data ini diambil dari pasien perempuan berumur minimal 21 tahun yang merupakan keturunan suku Indian Pima. Data ini memiliki lisensi *CC0: Public Domain* dengan *Usability score* 10.00. Dalam dataset ini memiliki beberapa fitur yang tersimpan kedalam beberapa variabel sebagai berikut:
+Data yang digunakan dalam proyek ini merupakan data yang aslinya diperoleh dari *National Institute of Diabetes and Digestive and Kidney Diseases* yang kemudian dipublikasikan oleh Akshay Dattatray Khare. Data ini diambil dari pasien perempuan berumur minimal 21 tahun yang merupakan keturunan suku Indian Pima. Keterangan lebih lanjut mengenai dataset ini yaitu
+
+<div align="center">
+  
+  Indeks|Keterangan
+  ---|---
+  Title|Diabetes dataset
+  Source|[Kaggle](https://www.kaggle.com/datasets/akshaydattatraykhare/diabetes-dataset/data)
+  Uploader|Akshay Dattatray Khare
+  Owner|National Institute of Diabetes and Digestive and Kidney Diseases
+  License|CC0: Public Domain
+  Usability|10.00
+  Tags|Tabular, Data visualization, Pandas, India, Diabetes
+</div>
+
+Dalam dataset ini memiliki beberapa fitur yang tersimpan kedalam beberapa variabel sebagai berikut:
 
 <div align="center">
   
 Variabel|Keterangan
-----------|----------
+---|---
 Pregnancies|Jumlah kehamilan
 Glucose|Kadar glukosa dalam darah
 BloodPressure|Tekanan darah
@@ -45,6 +60,26 @@ Age|Umur
 Outcome|Nilai akhir (positif = 1) dan (negatif = 0)
 
 </div>
+
+Data tambahan yang terdapat dalam dataset ini adalah sebagai berikut:
+
+<div align="center">
+  
+Index|Valid|Mismatched|Missing|
+---|---|---|---
+Pregnancies|768|0|0
+Glucose|768|0|0
+BloodPressure|768|0|0
+SkinThickness|768|0|0
+Insulin|768|0|0
+BMI|768|0|0
+DiabetesPedigreeFunction|768|0|0
+Age|768|0|0
+Outcome|768|0|0
+
+</div>
+
+Data diatas mengindikasikan bahwa terdapat `768 data` dengan `9 kolom` dalam dataset ini dan semuanya merupakan data yang valid yang artinya tidak ada data dengan *missing value* dan data yang terduplikasi.
 
 ## **Exploratory Data Analysis**
 ### **Deskripsi Variabel**
@@ -96,34 +131,6 @@ Dimana:
   <li>75% merupakan kuartil ketiga, dan</li>
   <li>max merupakan nilai maximum.</li>
 </ul>
-
-### **Menangani missing value dan outliners**
-Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari data yang mengandung nilai kosong, data terduplikat, serta data dengan nilai yang menyimpang (outliners). Hal ini dilakukan agar data-data tidak lengkap tersebut tidak menggangu dalam pengimplementasian model nanti.
-
-Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
-
-<p align="center" width="100%">
-  <img src="images/boxplot_of_pregnancies.png"/>
-  <img src="images/boxplot_of_glucose.png"/>
-  <img src="images/boxplot_of_blood_pressure.png"/>
-  <img src="images/boxplot_of_skin_thickness.png"/>
-  <img src="images/boxplot_of_insulin.png"/>
-  <img src="images/boxplot_of_body_mass_index.png"/>
-  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
-  <img src="images/boxplot_of_age.png"/>
-</p>
-
-Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners.
-
-```python
-Q1 = df.quantile(0.25)
-Q3 = df.quantile(0.75)
-IQR = Q3 - Q1
-
-df_out = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
-```
-
-Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada 129 data outliners dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
 
 ### **Unvariate analysis**
 Untuk menjalankan proses ini, terlebih dahulu setiap fitur harus dibagi menjadi fitur numerik dan kategorik yang diantaranya:
@@ -188,9 +195,38 @@ Dari heatmap diatas dapat terlihat bahwa:
 ## **Data Preparation**
 Proses ini dilakukan melalui beberapa tahap yang meliputi:
 <ul>
+  <li>Menangani missing value dan outliners</li>
   <li>Pembagian data latih dan uji, dan</li>
   <li>Standarisasi</li>
 </ul>
+
+### **Menangani missing value dan outliners**
+Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari data yang mengandung nilai kosong, data terduplikat, serta data dengan nilai yang menyimpang (outliners). Hal ini dilakukan agar data-data tidak lengkap tersebut tidak menggangu dalam pengimplementasian model nanti.
+
+Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
+
+<p align="center" width="100%">
+  <img src="images/boxplot_of_pregnancies.png"/>
+  <img src="images/boxplot_of_glucose.png"/>
+  <img src="images/boxplot_of_blood_pressure.png"/>
+  <img src="images/boxplot_of_skin_thickness.png"/>
+  <img src="images/boxplot_of_insulin.png"/>
+  <img src="images/boxplot_of_body_mass_index.png"/>
+  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
+  <img src="images/boxplot_of_age.png"/>
+</p>
+
+Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners.
+
+```python
+Q1 = df.quantile(0.25)
+Q3 = df.quantile(0.75)
+IQR = Q3 - Q1
+
+df_out = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
+```
+
+Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada `129 data outliners` dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
 
 ### **Pembagian data latih dan uji**
 Proses ini akan membagi data yang ada menjadi data latih dan data uji dengan rasio pembagian sebesar 80% untuk data latih dan 20% untuk data uji. Data latih digunakan untuk melatih model yang akan dibuat agar model terbiasa dengan data yang tersedia, yang kemudian model tersebut akan diuji menggunakan data uji untuk mengetahui seberapa efektif model tersebut. Dari total data yang dimiliki di proyek ini (639 data), yang mana 80% dari total data (511 data) menjadi data latih, dan 20% dari total data (128 data) menjadi data uji.
