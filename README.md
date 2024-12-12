@@ -97,6 +97,34 @@ Dimana:
   <li>max merupakan nilai maximum.</li>
 </ul>
 
+### **Menangani missing value dan outliners**
+Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari data yang mengandung nilai kosong, data terduplikat, serta data dengan nilai yang menyimpang (outliners). Hal ini dilakukan agar data-data tidak lengkap tersebut tidak menggangu dalam pengimplementasian model nanti.
+
+Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
+
+<p align="center" width="100%">
+  <img src="images/boxplot_of_pregnancies.png"/>
+  <img src="images/boxplot_of_glucose.png"/>
+  <img src="images/boxplot_of_blood_pressure.png"/>
+  <img src="images/boxplot_of_skin_thickness.png"/>
+  <img src="images/boxplot_of_insulin.png"/>
+  <img src="images/boxplot_of_body_mass_index.png"/>
+  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
+  <img src="images/boxplot_of_age.png"/>
+</p>
+
+Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners.
+
+```python
+Q1 = df.quantile(0.25)
+Q3 = df.quantile(0.75)
+IQR = Q3 - Q1
+
+df_out = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
+```
+
+Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada 129 data outliners dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
+
 ### **Unvariate analysis**
 Untuk menjalankan proses ini, terlebih dahulu setiap fitur harus dibagi menjadi fitur numerik dan kategorik yang diantaranya:
 <ul>
@@ -160,28 +188,9 @@ Dari heatmap diatas dapat terlihat bahwa:
 ## **Data Preparation**
 Proses ini dilakukan melalui beberapa tahap yang meliputi:
 <ul>
-  <li>Menangani missing value dan outliners</li>
   <li>Pembagian data latih dan uji, dan</li>
   <li>Standarisasi</li>
 </ul>
-
-### **Menangani missing value dan outliners**
-Sebelum data diproses lebih lanjut, data terlebih dahulu akan dibersihkan dari data yang mengandung nilai kosong, data terduplikat, serta data dengan nilai yang menyimpang (outliners). Hal ini dilakukan agar data-data tidak lengkap tersebut tidak menggangu dalam pengimplementasian model nanti.
-
-Setelah melakukan proses pengecekan mengenai data kosong dan terduplikasi, ternyata data-data tersebut tidak ditemukan dalam dataset di proyek ini sehingga proses akan langsung dilanjutkan untuk menangani data dengan nilai menyimpang (Outliners).
-
-<p align="center" width="100%">
-  <img src="images/boxplot_of_pregnancies.png"/>
-  <img src="images/boxplot_of_glucose.png"/>
-  <img src="images/boxplot_of_blood_pressure.png"/>
-  <img src="images/boxplot_of_skin_thickness.png"/>
-  <img src="images/boxplot_of_insulin.png"/>
-  <img src="images/boxplot_of_body_mass_index.png"/>
-  <img src="images/boxplot_of_diabetes_pedigree_function.png"/>
-  <img src="images/boxplot_of_age.png"/>
-</p>
-
-Berdasarkan data visual diatas dapat disimpulkan bahwa setiap fitur memiliki data outliners atau data yang memiliki nilai menyimpang pada umumnya sehingga harus dihapus. Dalam proyek ini penulis menggunakan IQR Method untuk menghapus data outliners. Setelah dilakukan proses penghapusan data outliners, ditemukan bahwa ada 129 data outliners dalam dataset di proyek ini. Setelah dihapus maka proses dapat dilanjutkan.
 
 ### **Pembagian data latih dan uji**
 Proses ini akan membagi data yang ada menjadi data latih dan data uji dengan rasio pembagian sebesar 80% untuk data latih dan 20% untuk data uji. Data latih digunakan untuk melatih model yang akan dibuat agar model terbiasa dengan data yang tersedia, yang kemudian model tersebut akan diuji menggunakan data uji untuk mengetahui seberapa efektif model tersebut. Dari total data yang dimiliki di proyek ini (639 data), yang mana 80% dari total data (511 data) menjadi data latih, dan 20% dari total data (128 data) menjadi data uji.
@@ -219,27 +228,82 @@ Dalam proyek ini model yang digunakan untuk mengolah data dan membuat prediksi t
 ### **K-Nearest Neighbour**
 Algoritme KNN bekerja dengan menemukan K tetangga terdekat ke titik data tertentu berdasarkan metrik jarak, seperti jarak Euclidean. Kelas atau nilai titik data kemudian ditentukan oleh suara mayoritas atau rata-rata K tetangga. Pendekatan ini memungkinkan algoritme untuk beradaptasi dengan pola yang berbeda dan membuat prediksi berdasarkan struktur lokal data.
 
-Model KNN yang digunakan dalam proyek ini menggunakan fungsi KNeighborsRegressor dari modul sklearn.neighbors, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `n_neighbors` yang merupakan jumlah tetangga, `p` yang berarti kekuatan parameter untuk metrik minkowski, `leaf_size` yang berarti ukuran daun, dan p yang berarti kekuatan parameter.
+Model KNN yang digunakan dalam proyek ini menggunakan fungsi `KNeighborsClassifier` dari modul `sklearn.neighbors`, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. 
+```python
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+knn = KNeighborsClassifier(n_neighbors=25, p=2, leaf_size=10)
+knn.fit(X_train, y_train)
+```
+Parameter yang digunakan dalam model KNN diantaranya:
+*   `n_neighbors = 25` Jumlah tetangga
+*   `p = 2` Kekuatan parameter untuk metrik minkowski, pada model ini digunakan minkowski_distance (l_p)
+*   `leaf_size = 10` Ukuran daun yang akan diteruskan ke BallTree atau KDTree
 
 ### **Random Forest**
 Random Forest bekerja dengan membangun beberapa decision tree dan menggabungkannya demi mendapatkan prediksi yang lebih stabil dan akurat. ‘Hutan’ yang dibangun oleh Random Forest adalah kumpulan decision tree di mana biasanya dilatih dengan metode bagging. Ide umum dari metode bagging adalah kombinasi model pembelajaran untuk meningkatkan hasil keseluruhan.
 
-Model Random Forest yang digunakan dalam proyek ini menggunakan fungsi RandomForestRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `n_estimators` yang artinya jumlah pohon di dalam hutan, `max_depth` yang berarti kedalaman maksimum dari pohon, dan `leaf_size` yang berarti ukuran daun.
+Model Random Forest yang digunakan dalam proyek ini menggunakan fungsi `RandomForestClassifier` dari modul `sklearn.ensemble`, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. 
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+rf = RandomForestClassifier(n_estimators=200, max_depth=8, random_state=42)
+rf.fit(X_train, y_train)
+```
+Parameter yang digunakan dalm model Random Forest diantaranya:
+*   `n_estimators = 200` Jumlah pohon di dalam hutan
+*   `max_depth = 8` Total kedalaman pohon
+*   `random_state = 42` Jumlah sampel acak
+
 
 ### **Adaptive Boosting**
 AdaBoost awalnya memberikan bobot yang sama untuk setiap set data. Kemudian, secara otomatis menyesuaikan bobot titik data setelah setiap pohon keputusan. AdaBoost memberikan bobot lebih pada item dengan klasifikasi yang salah agar diperbaiki di putaran berikutnya. AdaBoost mengulangi proses tersebut hingga kesalahan yang tersisa, atau selisih antara nilai aktual dan prediksi, jatuh di bawah ambang batas yang dapat diterima.
 
-Model Adaptive Boosting yang digunakan dalam proyek ini menggunakan fungsi AdaBoostRegressor dari modul sklearn.ensemble, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `n_estimator` yaitu jumlah penaksir dimana peningkatan dihentikan, `learning_rate` yaitu kecepatan pembelajaran, dan `random_state` yaitu benih acak yang digunakan dalam proses.
+Model Adaptive Boosting yang digunakan dalam proyek ini menggunakan fungsi `AdaBoostClassifier` dari modul `sklearn.ensemble`, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. 
+```python
+from sklearn.ensemble import AdaBoostClassifier
+
+boosting = AdaBoostClassifier(n_estimators=100,learning_rate=0.1, random_state=42)
+boosting.fit(X_train, y_train)
+```
+Parameter yang digunakan dalm model Adaptive Boosting diantaranya:
+*   `n_estimators = 100` Jumlah penaksir dimana peningkatan dihentikan
+*   `learning_rate = 0.1` Kecepatan pembelajaran
+*   `random_state = 42` Jumlah sampel acak
+---
 
 ### **Support Vector Machine**
 SVM bekerja dengan memetakan data ke ruang fitur berdimensi tinggi sehingga titik data dapat dikategorikan, bahkan ketika data tidak dapat dipisahkan secara linier. Ditemukan pemisah antar kategori, kemudian data ditransformasikan sedemikian rupa sehingga pemisah tersebut dapat digambarkan sebagai hyperplane. Setelah itu, karakteristik data baru dapat digunakan untuk memprediksi kelompok mana yang seharusnya menjadi bagian dari data baru.
 
-Model SVM yang digunakan dalam proyek ini menggunakan fungsi SVR dari modul sklearn.svm, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `gamma` yang merupakan kernel koefisien, `C` yang merupakan parameter regularisasi, dan `kernel` yang menentukan tipe kernel yang akan digunakan dalam algoritma.
+Model SVM yang digunakan dalam proyek ini menggunakan fungsi `SVC` dari modul `sklearn.svm`, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan.
+```python
+from sklearn.svm import SVC
 
-### **Decission Tree Regression**
+svm = SVC(gamma = 'scale', C=10, kernel='linear')
+svm.fit(X_train, y_train)
+```
+Parameter yang digunakan dalm model Support Vector Machine diantaranya:
+*   `gamma = scale` koefisien kernel yang digunakan = 1/jumlah fitur
+*   `C = 10` Parameter regularisasi
+*   `kernel= linear` Menentukan tipe kernel yang akan digunakan dalam algoritma
+
+### **Decission Tree**
 Untuk memprediksi kelas dari dataset yang diberikan, algoritma Decision tree dimulai dari simpul akar pohon. Algoritma ini membandingkan nilai atribut root dengan atribut record. Berdasarkan perbandingan tersebut, algoritma menelusuri cabang dan menuju ke simpul berikutnya. Untuk simpul berikutnya, algoritma kembali membandingkan nilai atribut dengan sub-simpul lainnya dan bergerak menuju simpul yang lebih dalam. Tujuannya untuk melanjutkan proses sampai mencapai simpul daun (node leaf). 
 
-Model Decission Tree yang digunakan dalam proyek ini menggunakan fungsi DecisionTreeRegressor dari modul sklearn.tree, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. Mulai dari `min_samples_leaf` yang merupakan jumlah minimum sampel yang diperlukan untuk berada pada simpul daun, `min_samples_split` yang merupakan jumlah minimum sampel yang diperlukan untuk memisahkan node internal, `max_depth` yang merupakan kedalaman maksimum dari pohon, `max_features` yang merupakan jumlah fitur yang perlu dipertimbangkan saat mencari pemisahan terbaik, dan `random_state` yang melakukan kontrol terhadap penafsir acak.
+Model Decission Tree yang digunakan dalam proyek ini menggunakan fungsi `DecisionTreeClassifier` dari modul `sklearn.tree`, melalui fungsi ini model akan dilatih dan diuji menggunakan data latih dan uji yang tersedia dengan beberapa parameter tambahan. 
+```python
+from sklearn.tree import DecisionTreeClassifier
+
+dtree = DecisionTreeClassifier(min_samples_leaf = 1, min_samples_split = 2, max_depth = 1, max_features = 4, random_state = 42)
+dtree.fit(X_train, y_train)
+```
+Parameter yang digunakan dalam model Decision Tree diantaranya:
+*   `min_sample_leaf = 10` Jumlah minimum sampel yang diperlukan untuk berada pada simpul daun
+*   `min_samples_split = 2` Jumlah minimum sampel yang diperlukan untuk memisahkan node internal
+*   `max_depth = 8` Kedalaman maksimum dari pohon
+*   `max_features = 1` Jumlah fitur yang perlu dipertimbangkan saat mencari pemisahan terbaik
+*   `random_state = 42` Jumlah sampel acak
 
 ## **Evaluasi Model**
 Metrik yang digunakan dalam proses evaluasi ini yaitu:
